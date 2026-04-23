@@ -6,6 +6,7 @@ import com.sos.model.User;
 import com.sos.model.UserStatus;
 import com.sos.repository.SecurityLogRepository;
 import com.sos.repository.UserRepository;
+import com.sos.security.DemoProtectionService;
 import com.sos.security.JwtPrincipal;
 import com.sos.service.SecurityLogService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,15 +38,18 @@ public class UserController {
     private final SecurityLogRepository logRepo;
     private final SecurityLogService securityLog;
     private final PasswordEncoder passwordEncoder;
+    private final DemoProtectionService demoProtection;
 
     public UserController(UserRepository userRepo,
                           SecurityLogRepository logRepo,
                           SecurityLogService securityLog,
-                          PasswordEncoder passwordEncoder) {
+                          PasswordEncoder passwordEncoder,
+                          DemoProtectionService demoProtection) {
         this.userRepo = userRepo;
         this.logRepo = logRepo;
         this.securityLog = securityLog;
         this.passwordEncoder = passwordEncoder;
+        this.demoProtection = demoProtection;
     }
 
     private String validatePassword(String pw) {
@@ -131,6 +135,13 @@ public class UserController {
         String pwError = validatePassword(req.getPassword());
         if (pwError != null) {
             return ResponseEntity.badRequest().body(new ErrorResponse(pwError));
+        }
+
+        // Demo protection: cap user accounts
+        String capError = demoProtection.checkUserCap();
+        if (capError != null) {
+            return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
+                    .body(new ErrorResponse(capError));
         }
 
         try {

@@ -3,6 +3,7 @@ package com.sos.controller;
 import com.sos.dto.*;
 import com.sos.model.Order;
 import com.sos.model.OrderStatus;
+import com.sos.security.DemoProtectionService;
 import com.sos.security.JwtPrincipal;
 import com.sos.service.OrderService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,9 +24,11 @@ import java.util.NoSuchElementException;
 public class OrderController {
 
     private final OrderService orderService;
+    private final DemoProtectionService demoProtection;
 
-    public OrderController(OrderService orderService) {
+    public OrderController(OrderService orderService, DemoProtectionService demoProtection) {
         this.orderService = orderService;
+        this.demoProtection = demoProtection;
     }
 
     // ── GET /api/orders ─────────────────────────────────────────────────────
@@ -62,6 +65,13 @@ public class OrderController {
     @PreAuthorize("hasRole('FOH')")
     public ResponseEntity<?> createOrder(@Valid @RequestBody CreateOrderRequest req,
                                          @AuthenticationPrincipal JwtPrincipal principal) {
+        // Demo protection: cap active orders
+        String capError = demoProtection.checkActiveOrderCap();
+        if (capError != null) {
+            return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
+                    .body(new ErrorResponse(capError));
+        }
+
         try {
             Order order = orderService.createOrder(req, principal.getId());
             return ResponseEntity.status(HttpStatus.CREATED).body(order);

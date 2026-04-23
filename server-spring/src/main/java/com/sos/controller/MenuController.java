@@ -6,6 +6,7 @@ import com.sos.model.Inventory;
 import com.sos.model.MenuItem;
 import com.sos.repository.InventoryRepository;
 import com.sos.repository.MenuItemRepository;
+import com.sos.security.DemoProtectionService;
 import com.sos.security.JwtPrincipal;
 import com.sos.service.SecurityLogService;
 import com.sos.service.SocketIOService;
@@ -31,15 +32,18 @@ public class MenuController {
     private final InventoryRepository inventoryRepo;
     private final SecurityLogService securityLog;
     private final SocketIOService socketIO;
+    private final DemoProtectionService demoProtection;
 
     public MenuController(MenuItemRepository menuItemRepo,
                           InventoryRepository inventoryRepo,
                           SecurityLogService securityLog,
-                          SocketIOService socketIO) {
+                          SocketIOService socketIO,
+                          DemoProtectionService demoProtection) {
         this.menuItemRepo = menuItemRepo;
         this.inventoryRepo = inventoryRepo;
         this.securityLog = securityLog;
         this.socketIO = socketIO;
+        this.demoProtection = demoProtection;
     }
 
     // ── GET /api/menu ───────────────────────────────────────────────────────
@@ -118,6 +122,13 @@ public class MenuController {
         if (req.getPrice().signum() < 0) {
             return ResponseEntity.badRequest()
                     .body(new ErrorResponse("price must be a non-negative number."));
+        }
+
+        // Demo protection: cap menu items
+        String capError = demoProtection.checkMenuItemCap();
+        if (capError != null) {
+            return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
+                    .body(new ErrorResponse(capError));
         }
 
         try {
