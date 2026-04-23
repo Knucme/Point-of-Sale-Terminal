@@ -64,8 +64,8 @@ public class DemoProtectionService {
         // Count orders that are NOT completed or cancelled (i.e. still active)
         long active = orderRepo.countByStatusIn(List.of(
                 OrderStatus.PENDING,
-                OrderStatus.PREPARING,
-                OrderStatus.READY));
+                OrderStatus.IN_PROGRESS,
+                OrderStatus.DELAYED));
         if (active >= maxActiveOrders) {
             return "Demo limit reached: maximum " + maxActiveOrders + " active orders allowed. "
                     + "Complete or cancel existing orders before submitting new ones.";
