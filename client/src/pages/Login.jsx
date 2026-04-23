@@ -121,6 +121,34 @@ export default function Login() {
           </form>
         </div>
 
+        {/* Demo accounts */}
+        <div className="tac-panel p-5 mt-5 shadow-tac">
+          <p className="font-mono text-[10px] text-tac-muted uppercase tracking-[0.2em] mb-3 text-center">Demo Accounts</p>
+          <div className="space-y-2">
+            {[
+              { role: 'Manager', user: 'manager', pass: 'Manager-Dev-2026', color: 'text-tac-green' },
+              { role: 'Kitchen (BOH)', user: 'boh_cook', pass: 'BohCook-Dev-2026', color: 'text-tac-cyan' },
+              { role: 'Server (FOH)', user: 'foh_server', pass: 'FohSvr-Dev-2026', color: 'text-tac-amber' },
+            ].map((acct) => (
+              <button
+                key={acct.user}
+                type="button"
+                onClick={() => { setForm({ username: acct.user, password: acct.pass }); setError(''); }}
+                className="w-full flex items-center justify-between px-3 py-2.5 rounded-tac bg-tac-mid/50 border border-tac-border hover:border-tac-green/40 hover:bg-tac-mid transition text-left group"
+              >
+                <div>
+                  <span className={`font-mono font-bold text-sm ${acct.color}`}>{acct.role}</span>
+                  <span className="text-tac-muted text-xs font-mono ml-2">{acct.user}</span>
+                </div>
+                <span className="text-tac-muted text-[10px] font-mono uppercase tracking-wider group-hover:text-tac-green transition">Fill</span>
+              </button>
+            ))}
+          </div>
+          <p className="text-tac-muted text-[10px] font-mono mt-3 text-center tracking-wide">
+            Tap a role to auto-fill credentials
+          </p>
+        </div>
+
         <p className="text-center text-tac-muted text-[10px] mt-6 font-mono tracking-widest uppercase">
           Auto-logout after 10 min idle
         </p>

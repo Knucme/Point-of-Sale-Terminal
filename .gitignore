@@ -63,10 +63,8 @@ target/
 !.mvn/wrapper/maven-wrapper.properties
 
 # ── Spring Boot secrets ─────────────────────────────────────────────────────
-# Never commit application.properties (contains DB creds + JWT secret).
-# Use application.properties.example as the safe template.
-**/application.properties
-**/application-*.properties
+# application.properties uses ${ENV_VAR:default} syntax — safe to commit.
+# Real secrets are injected via environment variables on Render.
 !**/application.properties.example
 !**/application-test.properties
 
