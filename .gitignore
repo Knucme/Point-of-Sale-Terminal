@@ -1,0 +1,75 @@
+# ── Dependencies ────────────────────────────────────────────────────────────
+node_modules/
+
+# ── Build output ────────────────────────────────────────────────────────────
+dist/
+build/
+.vite/
+*.tsbuildinfo
+
+# ── Environment / secrets ───────────────────────────────────────────────────
+# Never commit real secrets. .env.example is the only tracked env file.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+secrets/
+.secrets/
+
+# ── Logs ────────────────────────────────────────────────────────────────────
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ── Runtime / cache ─────────────────────────────────────────────────────────
+.npm/
+.eslintcache
+.cache/
+coverage/
+.nyc_output/
+
+# ── Prisma ──────────────────────────────────────────────────────────────────
+# NOTE: prisma/migrations/ MUST be committed (schema history). Do NOT ignore it.
+# Local SQLite / dev DB snapshots only:
+*.sqlite
+*.sqlite-journal
+*.db
+*.db-journal
+server/prisma/*.db*
+
+# ── OS / editor ─────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# ── Java / Maven ────────────────────────────────────────────────────────────
+target/
+*.class
+*.jar
+*.war
+*.ear
+.mvn/wrapper/maven-wrapper.jar
+!.mvn/wrapper/maven-wrapper.properties
+
+# ── Spring Boot secrets ─────────────────────────────────────────────────────
+# Never commit application.properties (contains DB creds + JWT secret).
+# Use application.properties.example as the safe template.
+**/application.properties
+**/application-*.properties
+!**/application.properties.example
+!**/application-test.properties
+
+# ── Misc ────────────────────────────────────────────────────────────────────
+tmp/
+temp/

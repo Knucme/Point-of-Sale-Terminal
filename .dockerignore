@@ -1,0 +1,9 @@
+node_modules
+client/node_modules
+client/dist
+server-spring/target
+.git
+docs
+*.md
+*.ps1
+*.bat

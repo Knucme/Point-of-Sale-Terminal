@@ -1,0 +1,16 @@
+#!/bin/sh
+# Maven Wrapper — downloads Maven if not installed
+# Full script at: https://github.com/apache/maven-wrapper
+# For now, just delegate to system mvn or provide instructions
+
+if command -v mvn >/dev/null 2>&1; then
+    exec mvn "$@"
+else
+    echo "Maven not found. Install it with:"
+    echo "  macOS:   brew install maven"
+    echo "  Ubuntu:  sudo apt install maven"
+    echo "  Windows: choco install maven"
+    echo ""
+    echo "Or download from: https://maven.apache.org/download.cgi"
+    exit 1
+fi

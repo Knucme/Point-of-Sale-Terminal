@@ -1,0 +1,20 @@
+target/
+!.mvn/wrapper/maven-wrapper.jar
+*.class
+*.jar
+*.war
+*.log
+.idea/
+*.iml
+.project
+.classpath
+.settings/
+.vscode/
+
+# ── Spring Boot secrets ─────────────────────────────────────────────────────
+# Never commit application.properties (contains DB creds + JWT secret).
+# Copy application.properties.example → application.properties and fill in values.
+src/main/resources/application.properties
+src/main/resources/application-*.properties
+!src/main/resources/application.properties.example
+!src/main/resources/application-test.properties

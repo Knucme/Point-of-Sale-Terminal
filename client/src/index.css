@@ -1,0 +1,172 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Import tactical fonts ─────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+/* ── Global resets for touch-first terminals ─────────────────────────────── */
+* {
+  -webkit-tap-highlight-color: transparent;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  background-color: #0f1318;
+  color: #c8d6df;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  touch-action: manipulation;
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior: none;
+}
+
+/* ── Tactical scrollbar ────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: #0f1318;
+}
+::-webkit-scrollbar-thumb {
+  background: #2a3545;
+  border-radius: 0;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #22c55e;
+}
+
+/* ── Selection styling ─────────────────────────────────────────────────── */
+::selection {
+  background: rgba(34,197,94,0.3);
+  color: #e2eaf0;
+}
+
+/* ── Utility: minimum tap target ─────────────────────────────────────────── */
+@layer components {
+  .tap-target {
+    @apply min-h-[3rem] min-w-[3rem] flex items-center justify-center;
+  }
+
+  .alert-banner {
+    @apply fixed top-0 left-0 right-0 z-50 text-white text-center py-3 px-4 font-semibold text-lg;
+    background-color: #ef4444;
+  }
+
+  /* Tactical status badges */
+  .status-badge-PENDING     { background: rgba(245,158,11,0.15); color: #fbbf24; border: 1px solid rgba(245,158,11,0.3); }
+  .status-badge-IN_PROGRESS { background: rgba(6,182,212,0.15);  color: #22d3ee; border: 1px solid rgba(6,182,212,0.3); }
+  .status-badge-DELAYED     { background: rgba(239,68,68,0.15);  color: #f87171; border: 1px solid rgba(239,68,68,0.3); }
+  .status-badge-COMPLETED   { background: rgba(34,197,94,0.15);  color: #4ade80; border: 1px solid rgba(34,197,94,0.3); }
+
+  /* Tactical panel — reusable card style */
+  .tac-panel {
+    background-color: #151a21;
+    border: 1px solid #2a3545;
+    border-radius: 2px;
+  }
+
+  /* Tactical input fields */
+  .tac-input {
+    background-color: #1c2530;
+    border: 1px solid #2a3545;
+    border-radius: 2px;
+    color: #c8d6df;
+    font-family: 'JetBrains Mono', monospace;
+    transition: border-color 0.15s;
+  }
+  .tac-input:focus {
+    outline: none;
+    border-color: #22c55e;
+    box-shadow: 0 0 0 1px rgba(34,197,94,0.3);
+  }
+  .tac-input::placeholder {
+    color: #4a5a6a;
+  }
+
+  /* Tactical button — primary green */
+  .tac-btn {
+    background-color: rgba(34,197,94,0.15);
+    color: #4ade80;
+    border: 1px solid rgba(34,197,94,0.3);
+    border-radius: 2px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.8rem;
+    transition: all 0.15s;
+  }
+  .tac-btn:hover {
+    background-color: rgba(34,197,94,0.25);
+    border-color: #22c55e;
+    box-shadow: 0 0 8px rgba(34,197,94,0.2);
+  }
+  .tac-btn:active {
+    background-color: rgba(34,197,94,0.35);
+  }
+
+  /* Tactical button — danger */
+  .tac-btn-danger {
+    background-color: rgba(239,68,68,0.15);
+    color: #f87171;
+    border: 1px solid rgba(239,68,68,0.3);
+    border-radius: 2px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.8rem;
+    transition: all 0.15s;
+  }
+  .tac-btn-danger:hover {
+    background-color: rgba(239,68,68,0.25);
+    border-color: #ef4444;
+  }
+
+  /* Tactical button — muted/secondary */
+  .tac-btn-muted {
+    background-color: rgba(74,90,106,0.15);
+    color: #c8d6df;
+    border: 1px solid #2a3545;
+    border-radius: 2px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.8rem;
+    transition: all 0.15s;
+  }
+  .tac-btn-muted:hover {
+    background-color: rgba(74,90,106,0.25);
+    border-color: #4a5a6a;
+  }
+}
+
+/* ── Animations ─────────────────────────────────────────────────────────── */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+@keyframes slide-down {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+@keyframes pulse-green {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.6; }
+}
+@keyframes blink-cursor {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0; }
+}
+
+@layer utilities {
+  .animate-fade-in    { animation: fade-in 0.2s ease-out both; }
+  .animate-slide-down { animation: slide-down 0.25s ease-out both; }
+  .animate-pulse-green { animation: pulse-green 2s ease-in-out infinite; }
+  .animate-blink      { animation: blink-cursor 1s step-end infinite; }
+}

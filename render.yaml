@@ -1,0 +1,50 @@
+# ─── Render Blueprint ────────────────────────────────────────────────────────
+# Connect your GitHub repo to Render, and it will auto-detect this file
+# to create the web service + database for you.
+# ─────────────────────────────────────────────────────────────────────────────
+
+databases:
+  - name: sos-db
+    plan: free
+    databaseName: sos_db
+    user: sos_user
+
+services:
+  - type: web
+    name: sos-app
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: PORT
+        value: "3001"
+      - key: SOCKETIO_PORT
+        value: "3002"
+      # Render provides host/port/user/password/dbName separately.
+      # Spring Boot needs a JDBC URL, so we build it from parts.
+      - key: DB_HOST
+        fromDatabase:
+          name: sos-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: sos-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: sos-db
+          property: database
+      - key: DB_USER
+        fromDatabase:
+          name: sos-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: sos-db
+          property: password
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CORS_ORIGIN
+        value: https://yourdomain.com
