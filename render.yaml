@@ -47,4 +47,4 @@ services:
       - key: JWT_SECRET
         generateValue: true
       - key: CORS_ORIGIN
-        value: https://sosterminal.org
+        value: https://yourdomain.com

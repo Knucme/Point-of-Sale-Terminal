@@ -12,16 +12,16 @@ WORKDIR /app
 
 # Copy pom.xml first (caches dependency layer)
 COPY server-spring/pom.xml ./pom.xml
-COPY server-spring/.mvn ./.mvn
-COPY server-spring/mvnw ./mvnw
-RUN chmod +x mvnw && ./mvnw dependency:go-offline -q
+RUN mvn dependency:go-offline -q
+
+# Copy source code
+COPY server-spring/src ./src
 
 # Copy React build into Spring Boot static resources
 COPY --from=frontend /app/client/dist ./src/main/resources/static/
 
-# Copy source and build JAR
-COPY server-spring/src ./src
-RUN ./mvnw clean package -DskipTests -q
+# Build JAR (use mvn directly — the Docker image has Maven pre-installed)
+RUN mvn clean package -DskipTests -q
 
 # ─── Stage 3: Runtime ───────────────────────────────────────────────────────
 FROM eclipse-temurin:17-jre-alpine
@@ -29,4 +29,4 @@ WORKDIR /app
 COPY --from=backend /app/target/support-of-sale-1.0.0.jar app.jar
 
 EXPOSE 3001 3002
-CMD ["java", "-jar", "app.jar"]
+CMD ["java", "-Dspring.profiles.active=prod", "-jar", "app.jar"]
