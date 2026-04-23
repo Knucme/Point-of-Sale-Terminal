@@ -6,6 +6,7 @@ import com.sos.model.Inventory;
 import com.sos.model.MenuItem;
 import com.sos.repository.InventoryRepository;
 import com.sos.repository.MenuItemRepository;
+import com.sos.security.DemoProtectionService;
 import com.sos.security.JwtPrincipal;
 import com.sos.service.SecurityLogService;
 import com.sos.service.SocketIOService;
@@ -43,12 +44,13 @@ class MenuControllerTest {
     @Mock private InventoryRepository inventoryRepo;
     @Mock private SecurityLogService securityLog;
     @Mock private SocketIOService socketIO;
+    @Mock private DemoProtectionService demoProtection;
 
     private JwtPrincipal managerPrincipal;
 
     @BeforeEach
     void setUp() {
-        MenuController controller = new MenuController(menuItemRepo, inventoryRepo, securityLog, socketIO);
+        MenuController controller = new MenuController(menuItemRepo, inventoryRepo, securityLog, socketIO, demoProtection);
         mvc = MockMvcBuilders.standaloneSetup(controller)
                 .setControllerAdvice(new GlobalExceptionHandler())
                 .setCustomArgumentResolvers(new AuthenticationPrincipalArgumentResolver())

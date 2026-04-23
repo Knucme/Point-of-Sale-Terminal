@@ -3,6 +3,7 @@ package com.sos.controller;
 import com.sos.config.GlobalExceptionHandler;
 import com.sos.model.Order;
 import com.sos.model.OrderStatus;
+import com.sos.security.DemoProtectionService;
 import com.sos.security.JwtPrincipal;
 import com.sos.service.OrderService;
 import org.junit.jupiter.api.AfterEach;
@@ -45,6 +46,7 @@ class OrderControllerTest {
     private MockMvc mvc;
 
     @Mock private OrderService orderService;
+    @Mock private DemoProtectionService demoProtection;
 
     private JwtPrincipal managerPrincipal;
     private JwtPrincipal bohPrincipal;
@@ -52,7 +54,7 @@ class OrderControllerTest {
 
     @BeforeEach
     void setUp() {
-        OrderController controller = new OrderController(orderService);
+        OrderController controller = new OrderController(orderService, demoProtection);
         mvc = MockMvcBuilders.standaloneSetup(controller)
                 .setControllerAdvice(new GlobalExceptionHandler())
                 .setCustomArgumentResolvers(new AuthenticationPrincipalArgumentResolver())
