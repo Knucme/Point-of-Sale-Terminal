@@ -14,13 +14,13 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SocketIOConfig {
 
-    @Value("${socketio.host}")
+    @Value("${socketio.host:0.0.0.0}")
     private String host;
 
-    @Value("${socketio.port}")
+    @Value("${socketio.port:3002}")
     private int port;
 
-    @Value("${cors.allowed-origin}")
+    @Value("${cors.allowed-origin:http://localhost:5173}")
     private String allowedOrigin;
 
     @Bean

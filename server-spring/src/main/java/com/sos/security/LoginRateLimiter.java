@@ -16,8 +16,8 @@ public class LoginRateLimiter {
     private final ConcurrentHashMap<String, CopyOnWriteArrayList<Long>> attempts = new ConcurrentHashMap<>();
 
     public LoginRateLimiter(
-            @Value("${rate-limit.login.max-attempts}") int maxAttempts,
-            @Value("${rate-limit.login.window-ms}") long windowMs) {
+            @Value("${rate-limit.login.max-attempts:10}") int maxAttempts,
+            @Value("${rate-limit.login.window-ms:300000}") long windowMs) {
         this.maxAttempts = maxAttempts;
         this.windowMs = windowMs;
     }

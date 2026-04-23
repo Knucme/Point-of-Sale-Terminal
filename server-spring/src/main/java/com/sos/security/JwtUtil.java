@@ -19,9 +19,9 @@ public class JwtUtil {
     private final long maxSessionSeconds;
 
     public JwtUtil(
-            @Value("${jwt.secret}") String secret,
-            @Value("${jwt.expiration-ms}") long expirationMs,
-            @Value("${jwt.max-session-seconds}") long maxSessionSeconds) {
+            @Value("${jwt.secret:default-secret-change-me-in-production-please}") String secret,
+            @Value("${jwt.expiration-ms:600000}") long expirationMs,
+            @Value("${jwt.max-session-seconds:43200}") long maxSessionSeconds) {
         this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
         this.expirationMs = expirationMs;
         this.maxSessionSeconds = maxSessionSeconds;
