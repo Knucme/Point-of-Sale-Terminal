@@ -64,7 +64,8 @@ public class SalesController {
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
 
             long completedCount = todayRecords.size();
-            long activeOrders = orderRepo.countByStatusNot(OrderStatus.COMPLETED);
+            long activeOrders = orderRepo.countByStatusIn(List.of(
+                    OrderStatus.PENDING, OrderStatus.IN_PROGRESS, OrderStatus.DELAYED));
 
             // Top 5 items by quantity sold (all time)
             List<OrderItem> allOrderItems = orderItemRepo.findAll();

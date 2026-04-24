@@ -63,7 +63,7 @@ export default function ManagerDashboard() {
 
   useEffect(() => {
     fetchSummary();
-    const interval = setInterval(fetchSummary, 60_000);
+    const interval = setInterval(fetchSummary, 10_000);
     return () => clearInterval(interval);
   }, [fetchSummary]);
 
