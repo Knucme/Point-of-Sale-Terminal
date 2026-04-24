@@ -596,6 +596,24 @@ export default function FOHDashboard() {
     };
   }, [socketReady]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // ── Polling fallback (when Socket.IO is unavailable, e.g. on Render) ──────
+  useEffect(() => {
+    const socket = getSocket();
+    if (socket?.connected) return;
+
+    const poll = () => {
+      axios.get('/api/orders/my')
+        .then((res) => { if (mounted.current) setMyOrders(res.data.orders ?? res.data ?? []); })
+        .catch(() => {});
+      axios.get('/api/menu')
+        .then((res) => { if (mounted.current) setMenuItems(res.data.items ?? res.data ?? []); })
+        .catch(() => {});
+    };
+
+    const id = setInterval(poll, 5000);
+    return () => clearInterval(id);
+  }, [socketReady]);
+
   // ── Active tables (tables with at least one non-completed/cancelled order) ──
   const activeTables = React.useMemo(() => {
     const tableMap = {};

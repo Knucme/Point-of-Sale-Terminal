@@ -386,6 +386,26 @@ export default function BOHDashboard() {
     };
   }, [socketReady]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // ── Polling fallback (when Socket.IO is unavailable, e.g. on Render) ──────
+  useEffect(() => {
+    const socket = getSocket();
+    // If socket is connected, skip polling — real-time events handle it
+    if (socket?.connected) return;
+
+    const poll = () => {
+      axios.get('/api/orders')
+        .then((res) => {
+          if (!mounted.current) return;
+          const all = res.data.orders ?? res.data ?? [];
+          setOrders(all.filter((o) => ['PENDING', 'IN_PROGRESS', 'DELAYED'].includes(o.status)));
+        })
+        .catch(() => {});
+    };
+
+    const id = setInterval(poll, 5000);
+    return () => clearInterval(id);
+  }, [socketReady]);
+
   // ── Sorted orders: PENDING → IN_PROGRESS → DELAYED, oldest first ─────────
   const sortedOrders = [...orders].sort((a, b) => {
     const P = { PENDING: 0, IN_PROGRESS: 1, DELAYED: 2 };
